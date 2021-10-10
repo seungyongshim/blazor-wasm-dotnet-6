@@ -38,10 +38,15 @@ jobs:
         dotnet test --logger "junit;LogFileName=Report.xml"
         sleep 2s
         dotnet test /p:AltCover=true /p:AltCoverReport="altcover.xml" /p:AltCoverAssemblyExcludeFilter='(xunit.*)|(System.*)|(.*Tests)'
+    - name: "Repository Meta"
+      uses: varunsridharan/action-repository-meta@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
     - name: Build
       run: |
         cd src	
         dotnet publish -o ../docs --configuration Release
+        sed -i 's%<base href="/">%<base href="/${{env.REPOSITORY_SLUG}}/">%g' ../docs/index.html
     - name: Deploy to Github Pages
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
