@@ -20,7 +20,8 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.101
+        dotnet-version: '6.0.x'
+        include-prerelease: true
     - name: Add Nuget
       run: |
         cd src
@@ -37,6 +38,9 @@ jobs:
         dotnet test --logger "junit;LogFileName=Report.xml"
         sleep 2s
         dotnet test /p:AltCover=true /p:AltCoverReport="altcover.xml" /p:AltCoverAssemblyExcludeFilter='(xunit.*)|(System.*)|(.*Tests)'
+    - name: Build
+      run: |
+        dotnet publish -o ../docs --configuration Release
     - name: ReportGenerator
       uses: danielpalme/ReportGenerator-GitHub-Action@4.8.4
       with:
