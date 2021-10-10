@@ -46,7 +46,7 @@ jobs:
       run: |
         cd src	
         dotnet publish -o ../docs --configuration Release
-        sed -i 's%<base href="/">%<base href="/${{env.REPOSITORY_SLUG}}/">%g' ../docs/index.html
+        sed -i 's%<base href="/">%<base href="/${{env.REPOSITORY_SLUG}}/">%g' ../docs/wwwroot/index.html
     - name: Deploy to Github Pages
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
